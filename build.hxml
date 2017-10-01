@@ -1,0 +1,6 @@
+-main Main
+-js public/files/js/script.js
+-cp src/haxe
+-cp /Applications/MAMP/htdocs/library/haxe/
+-cp /Applications/MAMP/htdocs/library/haxe/format/
+-cp /Applications/MAMP/htdocs/library/haxe/heaps/
