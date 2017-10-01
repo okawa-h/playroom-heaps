@@ -2,30 +2,61 @@
 import hxd.App;
 import h2d.Bitmap;
 import h2d.Tile;
+import h2d.Sprite;
 import h3d.Engine;
 
 
 class Main extends App {
 
-	var ratio : Float;
+	static inline var LENGTH : Int = 16;
+	var ratio  : Float;
+	var bitmapArr : Array<Bitmap>;
 
-	var left  : Bitmap;
-	var right : Bitmap;
+	var sprite : Sprite;
+	var left   : Bitmap;
+	var right  : Bitmap;
 
 	private override function init() {
+
+		bitmapArr = [];
+
+		sprite   = new Sprite(s2d);
+		sprite.x = Std.int(s2d.width * .5);
+		sprite.y = Std.int(s2d.height * .5);
 
 		ratio = 0;
 		engine.backgroundColor = 0x90A4AE;
 
 		var tile : Tile = Tile.fromColor(0x607D8B,10,10);
-		left   = new Bitmap(tile,s2d);
-		left.x = s2d.width * 0.5;
-		left.y = s2d.height * 0.5;
+		left   = new Bitmap(tile,sprite);
+		left.x = 0;
+		left.y = 0;
 
-		right   = new Bitmap(tile,s2d);
-		right.x = s2d.width * 0.5;
-		right.y = s2d.height * 0.5;
+		right   = new Bitmap(tile,sprite);
+		right.x = 0;
+		right.y = 0;
 
+
+		for( i in 0...LENGTH ) {
+
+			var bmp : Bitmap = new Bitmap(tile, sprite);
+			bmp.x = Math.cos(i * Math.PI / 8) * 100;
+			bmp.y = Math.sin(i * Math.PI / 8) * 100;
+			bmp.alpha = 0.1;
+			bmp.blendMode = Add;
+			bitmapArr.push(bmp);
+
+		}
+
+
+	}
+
+	private override function onResize() {
+
+		if( sprite == null ) return;
+
+		sprite.x = Std.int(s2d.width * .5);
+		sprite.y = Std.int(s2d.height * .5);
 
 	}
 
@@ -40,6 +71,22 @@ class Main extends App {
 
 		right.rotation += 0.01 + ratio;
 		right.tile.dy = -50;
+
+		// for (i in 0 ... sprite.getSpritesCount()) {
+
+		// 	var child : Sprite = sprite.getChildAt(i);
+		// 	child.rotation += 0.01;
+			
+		// }
+
+		for (i in 0 ... bitmapArr.length) {
+
+			var bmp : Bitmap = bitmapArr[i];
+			bmp.rotation += 0.01;
+			bmp.tile.dx = -50;
+			bmp.tile.dy = -50;
+			
+		}
 
 	}
 

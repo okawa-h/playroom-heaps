@@ -310,23 +310,56 @@ Main.main = function() {
 Main.__super__ = hxd_App;
 Main.prototype = $extend(hxd_App.prototype,{
 	init: function() {
+		this.bitmapArr = [];
+		this.sprite = new h2d_Sprite(this.s2d);
+		var _this = this.sprite;
+		_this.posChanged = true;
+		_this.x = this.s2d.width * .5 | 0;
+		var _this1 = this.sprite;
+		_this1.posChanged = true;
+		_this1.y = this.s2d.height * .5 | 0;
 		this.ratio = 0;
 		this.engine.backgroundColor = 9479342;
 		var tile = h2d_Tile.fromColor(6323595,10,10);
-		this.left = new h2d_Bitmap(tile,this.s2d);
-		var _this = this.left;
-		_this.posChanged = true;
-		_this.x = this.s2d.width * 0.5;
-		var _this1 = this.left;
-		_this1.posChanged = true;
-		_this1.y = this.s2d.height * 0.5;
-		this.right = new h2d_Bitmap(tile,this.s2d);
-		var _this2 = this.right;
+		this.left = new h2d_Bitmap(tile,this.sprite);
+		var _this2 = this.left;
 		_this2.posChanged = true;
-		_this2.x = this.s2d.width * 0.5;
-		var _this3 = this.right;
+		_this2.x = 0;
+		var _this3 = this.left;
 		_this3.posChanged = true;
-		_this3.y = this.s2d.height * 0.5;
+		_this3.y = 0;
+		this.right = new h2d_Bitmap(tile,this.sprite);
+		var _this4 = this.right;
+		_this4.posChanged = true;
+		_this4.x = 0;
+		var _this5 = this.right;
+		_this5.posChanged = true;
+		_this5.y = 0;
+		var _g = 0;
+		while(_g < 16) {
+			var i = _g++;
+			var bmp = new h2d_Bitmap(tile,this.sprite);
+			var v = Math.cos(i * Math.PI / 8) * 100;
+			bmp.posChanged = true;
+			bmp.x = v;
+			var v1 = Math.sin(i * Math.PI / 8) * 100;
+			bmp.posChanged = true;
+			bmp.y = v1;
+			bmp.alpha = 0.1;
+			bmp.blendMode = h2d_BlendMode.Add;
+			this.bitmapArr.push(bmp);
+		}
+	}
+	,onResize: function() {
+		if(this.sprite == null) {
+			return;
+		}
+		var _this = this.sprite;
+		_this.posChanged = true;
+		_this.x = this.s2d.width * .5 | 0;
+		var _this1 = this.sprite;
+		_this1.posChanged = true;
+		_this1.y = this.s2d.height * .5 | 0;
 	}
 	,update: function(dt) {
 		this.ratio += 0.001;
@@ -342,6 +375,17 @@ Main.prototype = $extend(hxd_App.prototype,{
 		_g1.posChanged = true;
 		_g1.rotation += 0.01 + this.ratio;
 		this.right.tile.dy = -50;
+		var _g11 = 0;
+		var _g2 = this.bitmapArr.length;
+		while(_g11 < _g2) {
+			var i = _g11++;
+			var bmp = this.bitmapArr[i];
+			var _g21 = bmp;
+			_g21.posChanged = true;
+			_g21.rotation += 0.01;
+			bmp.tile.dx = -50;
+			bmp.tile.dy = -50;
+		}
 	}
 	,__class__: Main
 });
@@ -52243,6 +52287,7 @@ if(ArrayBuffer.prototype.slice == null) {
 var DataView = $global.DataView || js_html_compat_DataView;
 var Float32Array = $global.Float32Array || js_html_compat_Float32Array._new;
 var Uint8Array = $global.Uint8Array || js_html_compat_Uint8Array._new;
+Main.LENGTH = 16;
 Xml.Element = 0;
 Xml.PCData = 1;
 Xml.CData = 2;
